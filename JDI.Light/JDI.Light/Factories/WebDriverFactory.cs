@@ -22,7 +22,16 @@ namespace JDI.Light.Factories
         public Func<IWebElement, bool> ElementSearchCriteria { get; set; } = el => el.Displayed;
 
         public static string DriverPath1 { get; set; }
-        
+
+        public WebDriverFactory()
+        {
+            Drivers = new Dictionary<string, Func<IWebDriver>>();
+            RunDrivers = new ThreadLocal<Dictionary<string, IWebDriver>>(() => new Dictionary<string, IWebDriver>());
+            DriverPath = AppDomain.CurrentDomain.BaseDirectory;
+            RunType = RunType.Local;
+        }
+
+
         public static IWebDriver GetLocalWebDriver(DriverType browser, bool headless = false)
         {
             if (headless && !(browser == DriverType.Chrome || browser == DriverType.Firefox))
@@ -39,15 +48,33 @@ namespace JDI.Light.Factories
             }
         }
 
-        public static IWebDriver GetLocalWebDriver(ChromeOptions options)
+        public string RegisterLocalWebDriver(string driverName)
         {
-            return new ChromeDriver(DriverPath1, options);
+            try
+            {
+                var driverType = _driverNamesDictionary.FirstOrDefault(x => x.Value == driverName).Key;
+                return RegisterLocalDriver(driverType);
+            }
+            catch
+            {
+                throw new Exception($"Can't register local driver: {driverName}");
+            }
         }
-        
+
         public static IWebDriver GetRemoteWebDriver(DriverOptions options, Uri gridUrl)
         {
             return new RemoteWebDriver(gridUrl, options);
         }
+
+        #region LocalDriverSpecificMethods
+
+        public static IWebDriver GetLocalWebDriver(ChromeOptions options)
+        {
+            return new ChromeDriver(DriverPath1, options);
+        }
+        #endregion
+
+        #region RemoteDriverSpecificMethods
 
         public static IWebDriver GetRemoteWebDriver(DriverType browser, Uri gridUrl, PlatformType platformType = PlatformType.Windows)
         {
@@ -59,6 +86,7 @@ namespace JDI.Light.Factories
                     throw new PlatformNotSupportedException($"Requested '{browser}' is not currently supported");
             }
         }
+        #endregion
 
 
         /// ---- -- -- - - - 
@@ -99,17 +127,7 @@ namespace JDI.Light.Factories
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(Jdi.Timeouts.WaitElementSec);
             return driver;
         };
-
-        public WebDriverFactory()
-        {
-            Drivers = new Dictionary<string, Func<IWebDriver>>();
-            RunDrivers = new ThreadLocal<Dictionary<string, IWebDriver>>(() => new Dictionary<string, IWebDriver>());
-            DriverPath = AppDomain.CurrentDomain.BaseDirectory;
-            RunType = RunType.Local;
-        }
-
         
-
         private ThreadLocal<Dictionary<string, IWebDriver>> RunDrivers { get; }
         public RunType RunType { get; set; }
 
