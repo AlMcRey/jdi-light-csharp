@@ -18,6 +18,52 @@ namespace JDI.Light.Factories
     {
         public static bool OnlyOneElementAllowedInSearch = true;
         public static Size BrowserSize = new Size();
+        private Dictionary<string, Func<IWebDriver>> Drivers { get; }
+        public Func<IWebElement, bool> ElementSearchCriteria { get; set; } = el => el.Displayed;
+
+        public static string DriverPath1 { get; set; }
+        
+        public static IWebDriver GetLocalWebDriver(DriverType browser, bool headless = false)
+        {
+            if (headless && !(browser == DriverType.Chrome || browser == DriverType.Firefox))
+            {
+                throw new ArgumentException($"Headless mode is not currently supported for browser '{browser}'");
+            }
+
+            switch (browser)
+            {
+                case DriverType.Chrome:
+                    return GetLocalWebDriver(DriverOptionsFactory.GetChromeOptions(headless));
+                default:
+                    throw new PlatformNotSupportedException($"{browser} is not currently supported");
+            }
+        }
+
+        public static IWebDriver GetLocalWebDriver(ChromeOptions options)
+        {
+            return new ChromeDriver(DriverPath1, options);
+        }
+        
+        public static IWebDriver GetRemoteWebDriver(DriverOptions options, Uri gridUrl)
+        {
+            return new RemoteWebDriver(gridUrl, options);
+        }
+
+        public static IWebDriver GetRemoteWebDriver(DriverType browser, Uri gridUrl, PlatformType platformType = PlatformType.Windows)
+        {
+            switch (browser)
+            {
+                case DriverType.Chrome:
+                    return GetRemoteWebDriver(DriverOptionsFactory.GetChromeOptions(platformType), gridUrl);
+                default:
+                    throw new PlatformNotSupportedException($"Requested '{browser}' is not currently supported");
+            }
+        }
+
+
+        /// ---- -- -- - - - 
+
+
 
         private readonly Dictionary<DriverType, string> _driverNamesDictionary = new Dictionary<DriverType, string>
         {
@@ -62,12 +108,12 @@ namespace JDI.Light.Factories
             RunType = RunType.Local;
         }
 
-        private Dictionary<string, Func<IWebDriver>> Drivers { get; }
+        
 
         private ThreadLocal<Dictionary<string, IWebDriver>> RunDrivers { get; }
         public RunType RunType { get; set; }
 
-        public Func<IWebElement, bool> ElementSearchCriteria { get; set; } = el => el.Displayed;
+        
 
         public string CurrentDriverName
         {
