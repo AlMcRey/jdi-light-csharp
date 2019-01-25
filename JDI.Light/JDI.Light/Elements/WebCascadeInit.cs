@@ -7,6 +7,7 @@ using JDI.Light.Attributes;
 using JDI.Light.Elements.Base;
 using JDI.Light.Elements.Common;
 using JDI.Light.Elements.Composite;
+using JDI.Light.Enums;
 using JDI.Light.Extensions;
 using JDI.Light.Factories;
 using JDI.Light.Interfaces.Base;
@@ -30,12 +31,12 @@ namespace JDI.Light.Elements
             typeof(UIElement)
         };
         
-        public void InitStaticPages(Type parentType, string driverName)
+        public void InitStaticPages(Type parentType, DriverType driverType)
         {
-            SetFields(null, parentType.StaticFields().GetFields(Decorators), parentType, driverName);
+            SetFields(null, parentType.StaticFields().GetFields(Decorators), parentType, driverType);
         }
 
-        private void SetFields(IBaseElement parent, List<FieldInfo> fields, Type parentType, string driverName)
+        private void SetFields(IBaseElement parent, List<FieldInfo> fields, Type parentType, DriverType driverType)
         {
             fields.Where(field => Decorators.ToList().Any(type => type.IsAssignableFrom(field.FieldType))).ToList()
                 .ForEach(field =>
@@ -43,12 +44,12 @@ namespace JDI.Light.Elements
                     var type = field.FieldType;
                     var instance = typeof(IPage).IsAssignableFrom(type)
                         ? GetInstancePage(parent, field, type, parentType)
-                        : GetInstanceElement(parent, type, parentType, field, driverName);
+                        : GetInstanceElement(parent, type, parentType, field, driverType);
                     instance.Name = field.GetElementName();
-                    instance.DriverName = driverName;
+                    //instance.DriverType = driverType;
                     instance.Parent = parent;
                     field.SetValue(parent, instance);
-                    SetFields(instance, instance.GetFields(Decorators, StopTypes), instance.GetType(), driverName);
+                    SetFields(instance, instance.GetFields(Decorators, StopTypes), instance.GetType(), driverType);
                 });
         }
         
@@ -75,7 +76,7 @@ namespace JDI.Light.Elements
         }
 
         protected IBaseElement GetInstanceElement(IBaseElement parent, Type type, Type parentType, FieldInfo field,
-            string driverName)
+            DriverType driverType)
         {
             var instance = (IBaseElement)field.GetValue(parent);
             type = type.IsInterface ? MapInterfaceToElement.ClassFromInterface(type) : type;

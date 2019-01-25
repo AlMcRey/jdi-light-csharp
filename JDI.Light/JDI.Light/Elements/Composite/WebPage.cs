@@ -35,7 +35,7 @@ namespace JDI.Light.Elements.Composite
             _url = url;
             Title = title;
             Name = $"{Title} ({Url})";
-            WebDriver = Jdi.DriverFactory.GetDriver();
+            WebDriver = Jdi.DriverFactory.GetLocalWebDriver();
             Timer = new Timer();
         }
         

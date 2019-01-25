@@ -1,5 +1,6 @@
 ﻿using System;
 using JDI.Light.Elements;
+using JDI.Light.Enums;
 using JDI.Light.Factories;
 using JDI.Light.Interfaces;
 using JDI.Light.Logging;
@@ -13,7 +14,7 @@ namespace JDI.Light
     {
         public static WebCascadeInit WebInit;
         public static IDriverFactory<IWebDriver> DriverFactory;
-        public static IWebDriver WebDriver => DriverFactory.GetDriver();
+        public static IWebDriver WebDriver => DriverFactory.GetLocalWebDriver();
         public static Timeouts Timeouts;
         public static IAssert Assert;
         public static ILogger Logger;
@@ -41,7 +42,7 @@ namespace JDI.Light
 
         public static void InitSite(Type siteType)
         {
-            WebInit.InitStaticPages(siteType, DriverFactory.CurrentDriverName);
+            WebInit.InitStaticPages(siteType, DriverType.Chrome);
         }
 
         public static object ExecuteScript(string script, params object[] args)

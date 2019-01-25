@@ -1,4 +1,5 @@
 ﻿using System;
+using JDI.Light.Enums;
 using OpenQA.Selenium;
 
 namespace JDI.Light.Elements.Composite
@@ -6,7 +7,7 @@ namespace JDI.Light.Elements.Composite
     public class WebSite
     {
         public string DriverName { set; get; }
-        public IWebDriver WebDriver => Jdi.DriverFactory.GetDriver(DriverName);
+        public IWebDriver WebDriver => Jdi.DriverFactory.GetLocalWebDriver(DriverType.Chrome);
         public string Url => WebDriver.Url;
         public string BaseUrl => new Uri(WebDriver.Url).GetLeftPart(UriPartial.Authority);
         public string Title => WebDriver.Title;

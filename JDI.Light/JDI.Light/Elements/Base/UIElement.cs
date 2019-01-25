@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using JDI.Light.Elements.WebActions;
@@ -20,12 +21,12 @@ namespace JDI.Light.Elements.Base
         public By FrameLocator;
         public By Locator;
 
-        public IWebDriver WebDriver => Jdi.DriverFactory.GetDriver(DriverName);
+        public IWebDriver WebDriver => Jdi.DriverFactory.GetLocalWebDriver();
 
         public ActionInvoker Invoker { get; set; }
         public ILogger Logger { get; set; }
         public Timer Timer { get; set; }
-        public string DriverName { get; set; }
+        public DriveType DriverType { get; set; }
 
         public UIElement(By byLocator)
         {
@@ -33,9 +34,9 @@ namespace JDI.Light.Elements.Base
             Invoker = new ActionInvoker(Logger);
             Locator = byLocator;
             Timer = new Timer(Jdi.Timeouts.CurrentTimeoutMSec);
-            if (string.IsNullOrEmpty(DriverName) && Jdi.DriverFactory != null &&
-                !string.IsNullOrEmpty(Jdi.DriverFactory.CurrentDriverName))
-                DriverName = Jdi.DriverFactory.CurrentDriverName;
+            /*if (DriverType != null && Jdi.DriverFactory != null &&
+                Jdi.DriverFactory.DriverType != null))
+                DriverType = Jdi.DriverFactory.DriverType;*/
         }
 
         public IWebElement WebElement
