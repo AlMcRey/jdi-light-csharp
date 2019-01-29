@@ -30,7 +30,7 @@ namespace JDI.Light.Factories
             DriverPath = AppDomain.CurrentDomain.BaseDirectory;
         }
         
-        public static IWebDriver StartLocalWebDriver(DriverType browser, bool headless = false)
+        private static IWebDriver StartLocalWebDriver(DriverType browser, bool headless = false)
         {
             if (headless && !(browser == DriverType.Chrome || browser == DriverType.Firefox))
             {
@@ -80,23 +80,7 @@ namespace JDI.Light.Factories
             }
         }
 
-        public IWebDriver GetLocalWebDriver()
-        {
-            try
-            {
-                var localDriver = GetLocalWebDriverByType(DriverType.Chrome);
-                if (localDriver != null) 
-                    return localDriver;
-                string fullDriverName = RegisterLocalWebDriver(DriverType.Chrome);
-                return GetLocalWebDriverByFullName(fullDriverName);
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"Can't get driver");
-            }
-        }
-
-        public IWebDriver GetLocalWebDriver(DriverType driverType)
+        public IWebDriver GetLocalWebDriver(DriverType driverType = DriverType.Chrome)
         {
             try
             {

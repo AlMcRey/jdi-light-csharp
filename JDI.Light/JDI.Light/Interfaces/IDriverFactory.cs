@@ -7,7 +7,6 @@ namespace JDI.Light.Interfaces
     public interface IDriverFactory<out T>
     {
         Func<IWebElement, bool> ElementSearchCriteria { get; set; }
-        IWebDriver GetLocalWebDriver();
-        IWebDriver GetLocalWebDriver(DriverType driverType);
+        IWebDriver GetLocalWebDriver(DriverType driverType = DriverType.Chrome);
     }
 }
