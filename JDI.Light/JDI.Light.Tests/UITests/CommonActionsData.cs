@@ -7,16 +7,16 @@ namespace JDI.Light.Tests.UITests
 {
     public class CommonActionsData
     {
-        public static int WaitTimeout => 1000;
+        public static int WaitTimeout => 500;
 
         public static void CheckText(Func<string> func, string expectedAttrValue)
         {
             Jdi.Assert.AreEquals(func(), expectedAttrValue);
         }
 
-        public static void CheckAction(string text)
+        public static void CheckAction(TestSite site, string text)
         {
-            var logOutput = TestSite.ActionsLog.Texts;
+            var logOutput = site.ActionsLog.Texts;
             Jdi.Assert.Contains(logOutput[0], text);
         }
 

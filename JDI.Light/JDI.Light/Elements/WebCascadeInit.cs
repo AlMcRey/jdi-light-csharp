@@ -22,80 +22,76 @@ namespace JDI.Light.Elements
     public class WebCascadeInit
     {
         protected Type[] Decorators = { typeof(IBaseElement), typeof(IList) };
+        protected Type[] StopTypes = { typeof(object), typeof(WebPage), typeof(Section), typeof(UIElement) };
 
-        protected Type[] StopTypes => new[]
+        public T InitPages<T>(DriverType driverType) where T : ISite, new ()
         {
-            typeof(object),
-            typeof(WebPage),
-            typeof(Section),
-            typeof(UIElement)
-        };
-        
-        public void InitStaticPages(Type parentType, DriverType driverType)
-        {
-            SetFields(null, parentType.StaticFields().GetFields(Decorators), parentType, driverType);
+            var siteType = typeof(T);
+            var site = new T { /*DriverName = driverName*/ };
+            var siteAttribute = siteType.GetCustomAttribute<SiteAttribute>(false);
+            if (siteAttribute?.Domain != null)
+            {
+                site.Domain = siteAttribute.Domain;
+            }
+            else if (siteAttribute?.DomainProviderMethodName != null && siteAttribute.DomainProviderType != null)
+            {
+                site.Domain = siteAttribute.GetDomainFunc.Invoke();
+            }
+            var members = siteType.InstanceMembers().Where(m => m.MemberType == MemberTypes.Property || m.MemberType == MemberTypes.Field);
+            SetMembers(site, members.FilterMembers(Decorators), driverType);
+            return site;
         }
 
-        private void SetFields(IBaseElement parent, List<FieldInfo> fields, Type parentType, DriverType driverType)
+        private void SetMembers(IBaseElement parent, IEnumerable<MemberInfo> parentMembers, DriverType driverType)
         {
-            fields.Where(field => Decorators.ToList().Any(type => type.IsAssignableFrom(field.FieldType))).ToList()
-                .ForEach(field =>
-                {
-                    var type = field.FieldType;
-                    var instance = typeof(IPage).IsAssignableFrom(type)
-                        ? GetInstancePage(parent, field, type, parentType)
-                        : GetInstanceElement(parent, type, parentType, field, driverType);
-                    instance.Name = field.GetElementName();
-                    //instance.DriverType = driverType;
-                    instance.Parent = parent;
-                    field.SetValue(parent, instance);
-                    SetFields(instance, instance.GetFields(Decorators, StopTypes), instance.GetType(), driverType);
-                });
+            var members = parentMembers.Where(m => Decorators.Any(type => type.IsAssignableFrom(m.GetMemberType())));
+            foreach (var member in members)
+            {
+                var type = member.GetMemberType();
+                var instance = typeof(IPage).IsAssignableFrom(type)
+                    ? GetInstancePage(parent, member)
+                    : GetInstanceElement(parent, member, driverType);
+                instance.Name = member.GetElementName();
+                //instance.DriverName = driverName;
+                member.SetMemberValue(parent, instance);
+                SetMembers(instance, instance.GetFields(Decorators, StopTypes), driverType);
+            }
         }
         
-        protected IPage GetInstancePage(object parent, FieldInfo field, Type type, Type parentType)
+        protected IPage GetInstancePage(IBaseElement parent, MemberInfo memberInfo)
         {
-            var instance = (IPage)(field.GetValue(parent)
-                                           ?? Activator.CreateInstance(type));
-            var pageAttribute = field.GetAttribute<PageAttribute>();
-            var site = parentType.GetCustomAttribute<SiteAttribute>(false);
-            if (!Jdi.HasDomain && site?.Domain != null)
-            {
-                Jdi.Domain = site.Domain;
-            }
-            else if (site?.DomainProviderMethodName != null && site.DomainProviderType != null)
-            {
-                Jdi.Domain = site.GetDomainFunc.Invoke();
-            }
-            instance.Url = pageAttribute.Url;
+            var pageAttribute = memberInfo.GetCustomAttribute<PageAttribute>(false);
+            var instance = (IPage) (memberInfo.GetMemberValue(parent)
+                                    ?? WebPageFactory.CreateInstance(memberInfo.GetMemberType(), pageAttribute.Url, pageAttribute.Title));
+            instance.Parent = (ISite) parent;
             instance.UrlTemplate = pageAttribute.UrlTemplate;
-            instance.Title = pageAttribute.Title;
             instance.CheckUrlType = pageAttribute.UrlCheckType;
             instance.CheckTitleType = pageAttribute.TitleCheckType;
             return instance;
         }
 
-        protected IBaseElement GetInstanceElement(IBaseElement parent, Type type, Type parentType, FieldInfo field,
-            DriverType driverType)
+        protected IBaseElement GetInstanceElement(IBaseElement parent, MemberInfo member, DriverType driverType)
         {
-            var instance = (IBaseElement)field.GetValue(parent);
+            var type = member.GetMemberType();
+            var instance = (IBaseUIElement)member.GetMemberValue(parent);
             type = type.IsInterface ? MapInterfaceToElement.ClassFromInterface(type) : type;
-            var element = (UIElement) instance ?? UIElementFactory.CreateInstance(type, field.GetFindsBy());
-            var checkedAttr = field.GetAttribute<IsCheckedAttribute>();
-            if (checkedAttr != null && typeof(ICheckBox).IsAssignableFrom(field.FieldType))
+            var element = (UIElement) instance ?? UIElementFactory.CreateInstance(type, member.GetFindsBy());
+            element.Parent = parent;
+            var checkedAttr = member.GetCustomAttribute<IsCheckedAttribute>(false);
+            if (checkedAttr != null && typeof(ICheckBox).IsAssignableFrom(member.GetMemberType()))
             {
                 var checkBox = (CheckBox)element;
                 checkBox.SetIsCheckedFunc(checkedAttr.CheckedDelegate);
             }
             if (parent == null || type != null)
             {
-                var frameBy = field.GetCustomAttribute<FrameAttribute>(false)?.FrameLocator;
+                var frameBy = member.GetCustomAttribute<FrameAttribute>(false)?.FrameLocator;
                 if (frameBy != null)
                     element.FrameLocator = frameBy;
                 By template;
                 if (element.Parent is Form<IConvertible> form && !element.HasLocator
                                                 && (template = form.LocatorTemplate) != null)
-                    element.Locator = template.FillByTemplate(field.Name);
+                    element.Locator = template.FillByTemplate(member.Name);
             }
             return element;
         }

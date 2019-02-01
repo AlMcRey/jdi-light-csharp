@@ -1,8 +1,8 @@
-﻿using System;
-using JDI.Light.Elements;
+﻿using JDI.Light.Elements;
 using JDI.Light.Enums;
 using JDI.Light.Factories;
 using JDI.Light.Interfaces;
+using JDI.Light.Interfaces.Composite;
 using JDI.Light.Logging;
 using JDI.Light.Settings;
 using JDI.Light.Utils;
@@ -18,8 +18,6 @@ namespace JDI.Light
         public static Timeouts Timeouts;
         public static IAssert Assert;
         public static ILogger Logger;
-        public static string Domain;
-        public static bool HasDomain => Domain != null && Domain.Contains("://");
         public static bool GetLatestDriver = true;
         public static string DriverVersion = "";
 
@@ -37,12 +35,12 @@ namespace JDI.Light
             Assert.Logger = Logger;
             DriverFactory = driverFactory ?? new WebDriverFactory();
             Timeouts = timeouts ?? new Timeouts();
-            WinProcUtils.Init();
         }
 
-        public static void InitSite(Type siteType)
+        public static T InitSite<T>() where T : ISite, new()
         {
-            WebInit.InitStaticPages(siteType, DriverType.Chrome);
+            var instance = WebInit.InitPages<T>(DriverType.Chrome);
+            return instance;
         }
 
         public static object ExecuteScript(string script, params object[] args)
