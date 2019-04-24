@@ -1,4 +1,5 @@
-﻿using JDI.Light.Exceptions;
+﻿using System.Linq;
+using JDI.Light.Exceptions;
 using JDI.Light.Tests.Enums;
 using NUnit.Framework;
 using OpenQA.Selenium;
@@ -72,6 +73,12 @@ namespace JDI.Light.Tests.Tests.Composite
         {
             TestSite.SidebarMenu.Select(Navigation.Service, Navigation.Dates);
             TestSite.Dates.CheckOpened();
+        }
+
+        [Test]
+        public void IsValudationTest()
+        {
+           var v = TestSite.Menu.Count;
         }
     }
 }

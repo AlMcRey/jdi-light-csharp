@@ -1,8 +1,11 @@
-﻿using JDI.Light.Attributes;
+﻿using JDI.Light.Asserts;
+using JDI.Light.Attributes;
+using JDI.Light.Elements.Base;
 using JDI.Light.Elements.Composite;
 using JDI.Light.Tests.UIObjects.Forms;
 using JDI.Light.Tests.UIObjects.Pages;
 using JDI.Light.Tests.UIObjects.Sections;
+using System.Collections.Generic;
 
 namespace JDI.Light.Tests.UIObjects
 {
@@ -53,5 +56,8 @@ namespace JDI.Light.Tests.UIObjects
 
         [FindBy(Id = "login-form")]
         public static LoginFormClient LoginFormPage;
+
+        [FindBy(Css = ".sidebar-menu span")]
+        public List<UIElement> Menu { get; set; }
     }
 }
