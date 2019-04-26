@@ -40,7 +40,8 @@ namespace JDI.Light.Settings
             {typeof(ITitle), typeof(Title) },
             {typeof(IProgressBar), typeof(ProgressBar) },
             {typeof(INumberSelector), typeof(NumberSelector) },
-            {typeof(IColorPicker), typeof(ColorPicker) }
+            {typeof(IColorPicker), typeof(ColorPicker) },
+            {typeof(IList<>), typeof(UIList<>) }
         };
 
         public static Type ClassFromInterface(Type clazz)
