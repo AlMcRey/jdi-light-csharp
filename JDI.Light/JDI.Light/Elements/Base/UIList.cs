@@ -1,16 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using JDI.Light.Factories;
+using JDI.Light.Interfaces.Base;
 using OpenQA.Selenium;
 
 namespace JDI.Light.Elements.Base
 {
-    public class UIList<T> : UIElement, IList<T>
+    public class UIList<T> : UIElement, IList<T> where T : IBaseUIElement
     {
         protected UIList(By byLocator) : base(byLocator)
         {
+            _uiElements = new List<T>();
         }
 
         private List<T> _uiElements;
+
+        public new List<IWebElement> WebElements => _uiElements.Select(e => e.WebElement).ToList();
+        public List<T> UIElements
+        {
+            get
+            {
+                _uiElements = new List<T>();
+                var els = GetWebElements();
+                foreach (var el in els)
+                {
+                    _uiElements.Add(UIElementFactory.CreateInstance<T>(Locator, this, el));
+                }
+                return _uiElements;
+            }
+        }
 
         public IEnumerator<T> GetEnumerator()
         {

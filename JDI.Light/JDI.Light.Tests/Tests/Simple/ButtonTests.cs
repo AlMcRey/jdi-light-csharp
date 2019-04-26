@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using OpenQA.Selenium;
 
 namespace JDI.Light.Tests.Tests.Simple
