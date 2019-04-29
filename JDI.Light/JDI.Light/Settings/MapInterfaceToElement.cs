@@ -40,13 +40,23 @@ namespace JDI.Light.Settings
             {typeof(ITitle), typeof(Title) },
             {typeof(IProgressBar), typeof(ProgressBar) },
             {typeof(INumberSelector), typeof(NumberSelector) },
-            {typeof(IColorPicker), typeof(ColorPicker) },
+            {typeof(IColorPicker), typeof(ColorPicker) }
+        };
+
+        public static readonly Dictionary<Type, Type> DefaultGenericInterfacesMap = new Dictionary<Type, Type>
+        {
+            {typeof(IList<IWebElement>), typeof(UIList<UIElement>) },
             {typeof(IList<>), typeof(UIList<>) }
         };
 
         public static Type ClassFromInterface(Type clazz)
         {
             return DefaultInterfacesMap[clazz];
+        }
+
+        public static Type GenericClassFromInterface(Type clazz)
+        {
+            return DefaultGenericInterfacesMap[clazz];
         }
     }
 }

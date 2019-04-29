@@ -1,6 +1,8 @@
-﻿using JDI.Light.Attributes;
+﻿using System.Collections.Generic;
+using JDI.Light.Attributes;
 using JDI.Light.Elements.Common;
 using JDI.Light.Interfaces.Common;
+using OpenQA.Selenium;
 
 namespace JDI.Light.Tests.UIObjects.Pages
 {
@@ -18,5 +20,8 @@ namespace JDI.Light.Tests.UIObjects.Pages
         public IImage UserIcon { get; set; }
         
         public Label MainTitle { get; set; }
+
+        [Css(" div.main-content > div > div")]
+        public IList<IWebElement> BenefitsList;
     }
 }

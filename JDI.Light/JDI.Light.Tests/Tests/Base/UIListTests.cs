@@ -8,7 +8,7 @@ namespace JDI.Light.Tests.Tests.Base
         [Test]
         public void UIListCreationTest()
         {
-
+            var l = TestSite.HomePage.BenefitsList;
         }
     }
 }

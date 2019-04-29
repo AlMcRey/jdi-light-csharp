@@ -69,6 +69,7 @@
     <Compile Include="Enums\Odds.cs" />
     <Compile Include="Enums\Weather.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\Base\UIListTests.cs" />
     <Compile Include="Tests\Complex\CheckListTests.cs" />
     <Compile Include="Tests\Common\ComboBoxTests.cs" />
     <Compile Include="Tests\Common\DropListTests.cs" />

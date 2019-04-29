@@ -16,7 +16,21 @@ namespace JDI.Light.Factories
     {
         public static IBaseUIElement CreateInstance(Type t, By locator, IBaseElement parent, List<By> locators = null)
         {
-            t = t.IsInterface ? MapInterfaceToElement.ClassFromInterface(t) : t;
+            if (t.IsGenericType)
+            {
+                var types = t.GetGenericArguments();
+                for (var i = 0; i < types.Length; i++)
+                {
+                    var type = types[i];
+                    types[i] = type.IsInterface ? MapInterfaceToElement.ClassFromInterface(type) : type;
+                }
+                t = t.IsInterface ? MapInterfaceToElement.GenericClassFromInterface(t) : t;
+                t = t.MakeGenericType(types);
+            }
+            else
+            {
+                t = t.IsInterface ? MapInterfaceToElement.ClassFromInterface(t) : t;
+            }
             var constructors = t.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             foreach (var con in constructors)
             {
