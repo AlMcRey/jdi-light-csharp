@@ -42,10 +42,36 @@ namespace JDI.Light.Utils
             var propertyMembers = membersArray.Where(m => m.MemberType == MemberTypes.Property
                                                           && ((PropertyInfo)m).SetMethod != null
                                                           && m.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
-            members = fieldMembers.Concat(propertyMembers.Where(p => p.Name != "WebElement")).Where(m => m.Name != "Parent" && m.Name != "WebElement");
-            return types == null || types.Length == 0
-                ? members
-                : members.Where(m => types.Any(t => t.IsAssignableFrom(m.GetMemberType())));
+
+            members = fieldMembers.Concat(propertyMembers.Where(p => p.Name != "WebElement")).Where(m => m.Name != "Parent" && m.Name != "WebElement").ToList();
+
+            var ms = members.ToList().Where(m => m.Name == "BenefitsList").ToList();
+            if (ms.Any())
+            {
+                var r = ms.First();
+            }
+
+            if (types == null || types.Length == 0)
+            {
+                return members;
+            }
+
+            var result = members.Where(m => types.Any(t => t.IsAssignableFrom(m.GetMemberType()) || t.CheckIfGeneric(m.GetMemberType())));
+            return result;
+        }
+
+        private static bool CheckIfGeneric(this Type targetType, Type memberType)
+        {
+            bool res;
+            if (!targetType.IsGenericType)
+            {
+                res =  false;
+            }
+            else
+            {
+                res = memberType.IsGenericType && memberType.GetGenericTypeDefinition() == targetType;
+            }
+            return res;
         }
     }
 }
