@@ -15,12 +15,11 @@ namespace JDI.Light.Elements
     public static class WebCascadeInit
     {
         private static readonly Type[] Decorators = { typeof(IBaseElement), typeof(IWebElement), typeof(IList<>) };
-        private static readonly Type[] StopTypes = { typeof(object), typeof(WebPage), typeof(Section), typeof(UIElement) };
+        private static readonly Type[] StopTypes = { typeof(object), typeof(WebPage), typeof(Section), typeof(UIElement), typeof(UIList<>)};
 
         public static IBaseElement InitMembers(this IBaseElement targetElement)
         {
-            var elementMembers = targetElement.GetMembers(Decorators, StopTypes).ToList();
-            var members = elementMembers.Where(m => Decorators.Any(type => type.IsAssignableFrom(m.GetMemberType())));
+            var members = targetElement.GetMembers(Decorators, StopTypes).ToList();
             foreach (var member in members)
             {
                 var type = member.GetMemberType();

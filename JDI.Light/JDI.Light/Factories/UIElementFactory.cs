@@ -25,7 +25,7 @@ namespace JDI.Light.Factories
                     types[i] = type.IsInterface ? MapInterfaceToElement.ClassFromInterface(type) : type;
                 }
                 t = t.IsInterface ? MapInterfaceToElement.GenericClassFromInterface(t) : t;
-                t = t.MakeGenericType(types);
+                //t = t.MakeGenericType(types);
             }
             else
             {

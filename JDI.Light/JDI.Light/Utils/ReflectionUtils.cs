@@ -30,7 +30,12 @@ namespace JDI.Light.Utils
 
         public static IEnumerable<MemberInfo> GetMembers(this object obj, Type[] types, params Type[] stopTypes)
         {
-            return FilterMembers(GetMembersDeep(obj.GetType(), stopTypes), types);
+            var oType = obj.GetType();
+            if (stopTypes.Contains(oType) || stopTypes.Any(t => t.CheckIfGeneric(oType)))
+            {
+                return new List<MemberInfo>();
+            }
+            return FilterMembers(GetMembersDeep(oType, stopTypes), types);
         }
 
         public static IEnumerable<MemberInfo> FilterMembers(this IEnumerable<MemberInfo> members, Type[] types)
@@ -44,12 +49,6 @@ namespace JDI.Light.Utils
                                                           && m.GetCustomAttribute<CompilerGeneratedAttribute>() == null);
 
             members = fieldMembers.Concat(propertyMembers.Where(p => p.Name != "WebElement")).Where(m => m.Name != "Parent" && m.Name != "WebElement").ToList();
-
-            var ms = members.ToList().Where(m => m.Name == "BenefitsList").ToList();
-            if (ms.Any())
-            {
-                var r = ms.First();
-            }
 
             if (types == null || types.Length == 0)
             {
