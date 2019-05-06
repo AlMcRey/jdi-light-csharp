@@ -11,82 +11,79 @@ namespace JDI.Light.Elements.Base
     {
         protected UIList(By byLocator) : base(byLocator)
         {
-            _uiElements = new List<T>();
         }
-
-        private List<T> _uiElements;
-
-        public new List<IWebElement> WebElements => _uiElements.Select(e => e.WebElement).ToList();
+        
+        public new List<IWebElement> WebElements => UIElements.Select(e => e.WebElement).ToList();
         public List<T> UIElements
         {
             get
             {
-                _uiElements = new List<T>();
+                var uiElements = new List<T>();
                 var els = GetWebElements();
                 foreach (var el in els)
                 {
-                    _uiElements.Add(UIElementFactory.CreateInstance<T>(Locator, this, el));
+                    uiElements.Add(UIElementFactory.CreateInstance<T>(Locator, this, el));
                 }
-                return _uiElements;
+                return uiElements;
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _uiElements.GetEnumerator();
+            return UIElements.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _uiElements.GetEnumerator();
+            return UIElements.GetEnumerator();
         }
 
         public void Add(T item)
         {
-            _uiElements.Add(item);
+            UIElements.Add(item);
         }
 
         public new void Clear()
         {
-            _uiElements.Clear();
+            UIElements.Clear();
         }
 
         public bool Contains(T item)
         {
-            return _uiElements.Contains(item);
+            return UIElements.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            _uiElements.CopyTo(array, arrayIndex);
+            UIElements.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(T item)
         {
-            return _uiElements.Remove(item);
+            return UIElements.Remove(item);
         }
 
-        public int Count => _uiElements.Count;
+        public int Count => UIElements.Count;
         public bool IsReadOnly => false;
         public int IndexOf(T item)
         {
-            return _uiElements.IndexOf(item);
+            return UIElements.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            _uiElements.Insert(index, item);
+            UIElements.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            _uiElements.RemoveAt(index);
+            UIElements.RemoveAt(index);
         }
 
         public T this[int index]
         {
-            get => _uiElements[index];
-            set => _uiElements[index] = value;
+            get => UIElements[index];
+            set => UIElements[index] = value;
         }
     }
 }
