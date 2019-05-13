@@ -9,6 +9,8 @@ namespace JDI.Light.Tests.Tests.Base
         public void UIListCreationTest()
         {
             var l = TestSite.HomePage.BenefitsList;
+            var e = l.WebElements;
+            var ui = l.List;
         }
     }
 }

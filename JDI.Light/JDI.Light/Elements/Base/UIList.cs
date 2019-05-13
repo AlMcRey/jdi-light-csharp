@@ -13,8 +13,8 @@ namespace JDI.Light.Elements.Base
         {
         }
         
-        public new List<IWebElement> WebElements => UIElements.Select(e => e.WebElement).ToList();
-        public List<T> UIElements
+        public new List<IWebElement> WebElements => List.Select(e => e.WebElement).ToList();
+        public List<T> List
         {
             get
             {
@@ -30,60 +30,60 @@ namespace JDI.Light.Elements.Base
 
         public IEnumerator<T> GetEnumerator()
         {
-            return UIElements.GetEnumerator();
+            return List.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return UIElements.GetEnumerator();
+            return List.GetEnumerator();
         }
 
         public void Add(T item)
         {
-            UIElements.Add(item);
+            List.Add(item);
         }
 
         public new void Clear()
         {
-            UIElements.Clear();
+            List.Clear();
         }
 
         public bool Contains(T item)
         {
-            return UIElements.Contains(item);
+            return List.Contains(item);
         }
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            UIElements.CopyTo(array, arrayIndex);
+            List.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(T item)
         {
-            return UIElements.Remove(item);
+            return List.Remove(item);
         }
 
-        public int Count => UIElements.Count;
+        public int Count => List.Count;
         public bool IsReadOnly => false;
         public int IndexOf(T item)
         {
-            return UIElements.IndexOf(item);
+            return List.IndexOf(item);
         }
 
         public void Insert(int index, T item)
         {
-            UIElements.Insert(index, item);
+            List.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            UIElements.RemoveAt(index);
+            List.RemoveAt(index);
         }
 
         public T this[int index]
         {
-            get => UIElements[index];
-            set => UIElements[index] = value;
+            get => List[index];
+            set => List[index] = value;
         }
     }
 }
