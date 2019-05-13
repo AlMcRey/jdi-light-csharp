@@ -59,8 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Asserts\FileAssert.cs" />
+    <Compile Include="Asserts\Generic\IsAssert.cs" />
+    <Compile Include="Asserts\IsAssert.cs" />
+    <Compile Include="Asserts\NumberAssert.cs" />
+    <Compile Include="Asserts\LinkAssert.cs" />
+    <Compile Include="Asserts\ProgressAssert.cs" />
+    <Compile Include="Asserts\RangeAssert.cs" />
     <Compile Include="Asserts\SelectAssert.cs" />
     <Compile Include="Asserts\TableAssert.cs" />
+    <Compile Include="Asserts\TextAreaAssert.cs" />
+    <Compile Include="Asserts\TextAssert.cs" />
     <Compile Include="Attributes\ByText.cs" />
     <Compile Include="Attributes\JDataList.cs" />
     <Compile Include="Attributes\JDropDown.cs" />
@@ -117,6 +125,8 @@
     <Compile Include="Factories\UIElementFactory.cs" />
     <Compile Include="Factories\WebPageFactory.cs" />
     <Compile Include="Factories\WebSiteFactory.cs" />
+    <Compile Include="Interfaces\Asserts\ICommonAssert.cs" />
+    <Compile Include="Interfaces\Asserts\IHasIsAssert.cs" />
     <Compile Include="Interfaces\Asserts\IHasSelectAssert.cs" />
     <Compile Include="Interfaces\Base\IBaseElement.cs" />
     <Compile Include="Interfaces\Base\IBaseUIElement.cs" />
@@ -160,11 +170,19 @@
     <Compile Include="Enums\LogLevels.cs" />
     <Compile Include="Matchers\CollectionMatchers\HasItemsMatcher.cs" />
     <Compile Include="Matchers\CollectionMatchers\SubsequenceOfMatcher.cs" />
+    <Compile Include="Matchers\DoubleMatchers\EqualToMatcher.cs" />
+    <Compile Include="Matchers\DoubleMatchers\GreaterThanMatcher.cs" />
+    <Compile Include="Matchers\DoubleMatchers\GreaterThanOrEqualToMatcher.cs" />
+    <Compile Include="Matchers\DoubleMatchers\LessThanMatcher.cs" />
+    <Compile Include="Matchers\DoubleMatchers\LessThanOrEqualToMatcher.cs" />
+    <Compile Include="Matchers\IntegerMatchers\EqualToMatcher.cs" />
     <Compile Include="Matchers\IntegerMatchers\GreaterThanOrEqualToMatcher.cs" />
     <Compile Include="Matchers\IntegerMatchers\LessThanOrEqualToMatcher.cs" />
     <Compile Include="Matchers\LongMatchers\GreaterThanMatcher.cs" />
     <Compile Include="Matchers\LongMatchers\Is.cs" />
     <Compile Include="Matchers\StringMatchers\ContainsStringMatcher.cs" />
+    <Compile Include="Matchers\StringMatchers\EqualToIgnoringCaseMatcher.cs" />
+    <Compile Include="Matchers\StringMatchers\EqualToMatcher.cs" />
     <Compile Include="Settings\ISmartLocator.cs" />
     <Compile Include="Settings\SmartLocatorByCss.cs" />
     <Compile Include="Settings\SmartLocatorById.cs" />

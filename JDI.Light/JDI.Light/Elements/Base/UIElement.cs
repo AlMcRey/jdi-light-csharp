@@ -4,11 +4,14 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using JDI.Light.Asserts;
 using JDI.Light.Elements.WebActions;
+using JDI.Light.Exceptions;
 using JDI.Light.Factories;
 using JDI.Light.Interfaces;
 using JDI.Light.Interfaces.Base;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace JDI.Light.Elements.Base
 {
@@ -256,5 +259,22 @@ namespace JDI.Light.Elements.Base
         {
             return WebElement.FindElements(by);
         }
+        
+        protected void CheckEnabled(bool toCheck)
+        {
+            if (toCheck)
+            {
+                if (!Enabled)
+                {
+                    throw new ElementDisabledException(this);
+                }
+            }
+        }
+
+        public IsAssert Is => new IsAssert(this);
+        public IsAssert AssertThat => Is;
+        public IsAssert Has => Is;
+        public IsAssert WaitFor => Is;
+        public IsAssert ShouldBe => Is;
     }
 }

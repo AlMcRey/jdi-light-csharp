@@ -1,4 +1,5 @@
-﻿using JDI.Light.Interfaces.Base;
+﻿using JDI.Light.Asserts;
+using JDI.Light.Interfaces.Base;
 
 namespace JDI.Light.Interfaces.Common
 {
@@ -8,6 +9,8 @@ namespace JDI.Light.Interfaces.Common
         double Min { get; }
         double Max { get; }
         double Step { get; }
-        void SetNumber(double number);
+        void SetNumber(double number, bool checkEnabled = true);
+        NumberAssert Is();
+        NumberAssert AssertThat();
     }
 }
