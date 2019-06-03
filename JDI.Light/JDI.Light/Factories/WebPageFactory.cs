@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using JDI.Light.Attributes;
 using JDI.Light.Elements.Composite;
 using JDI.Light.Extensions;
 using JDI.Light.Interfaces.Base;
 using JDI.Light.Interfaces.Composite;
+using OpenQA.Selenium;
 
 namespace JDI.Light.Factories
 {
@@ -30,6 +32,14 @@ namespace JDI.Light.Factories
             instance.CheckUrlType = pageAttribute.UrlCheckType;
             instance.CheckTitleType = pageAttribute.TitleCheckType;
             return instance;
+        }
+
+        public static void initElements(List<Object> pages)
+        {
+            foreach(var page in pages)
+            {
+                Site
+            }                        
         }
     }
 }

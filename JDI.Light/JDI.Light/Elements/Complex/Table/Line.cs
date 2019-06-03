@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JDI.Light.Elements.Base;
+using JDI.Light.Factories;
 
 namespace JDI.Light.Elements.Complex.Table
 {
@@ -61,6 +62,14 @@ namespace JDI.Light.Elements.Complex.Table
         public string GetValue()
         {
             return string.Join(";", GetList(0));
+        }
+
+        public T asLine<T>(T cl)
+        {
+            T instance;
+            instance = (T)Activator.CreateInstance(typeof(T));
+            WebPageFactory.initElements<T>(typeof(T));
+            return instance;
         }
     }
 }
