@@ -66,6 +66,7 @@
     <Compile Include="Asserts\DropDownAssert.cs" />
     <Compile Include="Asserts\FileAssert.cs" />
     <Compile Include="Asserts\Generic\IsAssert.cs" />
+    <Compile Include="Asserts\Generic\MatcherAssert.cs" />
     <Compile Include="Asserts\IconAssert.cs" />
     <Compile Include="Asserts\ImageAssert.cs" />
     <Compile Include="Asserts\IsAssert.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Asserts\RadioButtonAssert.cs" />
     <Compile Include="Asserts\RangeAssert.cs" />
     <Compile Include="Asserts\SelectAssert.cs" />
+    <Compile Include="Asserts\SoftAssert.cs" />
     <Compile Include="Asserts\TableAssert.cs" />
     <Compile Include="Asserts\TextAreaAssert.cs" />
     <Compile Include="Asserts\TextAssert.cs" />

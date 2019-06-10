@@ -1,5 +1,7 @@
 ﻿using JDI.Light.Elements.Common;
 using static JDI.Light.Jdi;
+using static JDI.Light.Asserts.SoftAssert;
+using Is = JDI.Light.Matchers.Is;
 
 namespace JDI.Light.Asserts
 {
@@ -14,6 +16,7 @@ namespace JDI.Light.Asserts
 
         public CheckBoxAssert Selected()
         {
+            
             Assert.IsTrue(CheckBox.IsChecked);
             return this;
         }
