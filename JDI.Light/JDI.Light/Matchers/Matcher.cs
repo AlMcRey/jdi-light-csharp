@@ -10,6 +10,10 @@ namespace JDI.Light.Matchers
             RightValue = rightValue;
         }
 
+        protected Matcher()
+        {            
+        }
+
         public T RightValue { get; }
 
         public T LeftValue { get; private set; }
@@ -34,5 +38,10 @@ namespace JDI.Light.Matchers
             LeftValue = leftValue;
             return Condition(leftValue, RightValue);
         } 
+
+        public IsNot<T> Not(Matcher<T> matcher)
+        {
+            return new IsNot<T>(matcher);
+        }
     }
 }

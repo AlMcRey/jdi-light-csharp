@@ -70,6 +70,7 @@ namespace JDI.Light.Tests.Tests.Common
         public void LabelTest()
         {
             AreEqual(TestSite.Html5Page.DressCode.Label().GetText(), "Dress code:");
+            
             TestSite.Html5Page.DressCode.Label().Is.Text(ContainsString("Dress"));
         }
 
@@ -80,7 +81,7 @@ namespace JDI.Light.Tests.Tests.Common
             TestSite.Html5Page.DressCode.Is.Selected(DressCode.Casual);
             TestSite.Html5Page.DressCode.Is.Values(HasItems(new[] { "Pirate" }));
             TestSite.Html5Page.DressCode.Is.Disabled(HasItems(new[] { "Disabled" }));
-            //TestSite.Html5Page.DressCode.Is.Disabled(Not(HasItems(new[] { "Disabled" }))); TODO: implement Matcher<T> Not(Matcher<T> matcher)
+            //TestSite.Html5Page.DressCode.Is.Disabled(Not(HasItem( "Disabled" ))); TODO: implement Matcher<T> HasItem(string)
             TestSite.Html5Page.DressCode.Is.Enabled(HasItems(new[] { "Pirate", "Fancy" }));
         }
 

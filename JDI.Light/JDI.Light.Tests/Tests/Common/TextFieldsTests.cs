@@ -3,6 +3,7 @@ using JDI.Light.Matchers.StringMatchers;
 using NUnit.Framework;
 using Is = JDI.Light.Matchers.Is;
 using static JDI.Light.Matchers.StringMatchers.ContainsStringMatcher;
+using static JDI.Light.Matchers.IsNot<string>;
 
 namespace JDI.Light.Tests.Tests.Common
 {
@@ -98,6 +99,7 @@ namespace JDI.Light.Tests.Tests.Common
             TestSite.Html5Page.NameTextField.Label().Is.Text(ContainsString("Your"));
             Assert.AreEqual(TestSite.Html5Page.SurnameTextField.Label().GetText(), "Surname:");
             TestSite.Html5Page.SurnameTextField.Label().Is.Text(ContainsString("Surname:"));
+            TestSite.Html5Page.SurnameTextField.Label().Is.Text(Not(ContainsString("Testtest:")));
         }
 
         [Test]

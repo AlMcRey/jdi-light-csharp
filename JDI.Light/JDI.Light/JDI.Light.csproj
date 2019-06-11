@@ -199,6 +199,7 @@
     <Compile Include="Matchers\IntegerMatchers\LessThanOrEqualToMatcher.cs" />
     <Compile Include="Matchers\LongMatchers\GreaterThanMatcher.cs" />
     <Compile Include="Matchers\LongMatchers\Is.cs" />
+    <Compile Include="Matchers\Not.cs" />
     <Compile Include="Matchers\StringMatchers\ContainsStringMatcher.cs" />
     <Compile Include="Matchers\StringMatchers\EqualToIgnoringCaseMatcher.cs" />
     <Compile Include="Matchers\StringMatchers\EqualToMatcher.cs" />
